@@ -2,6 +2,7 @@
 	"name": "rose/core",
 	"description": "Base para criação de ferramentas usando arquitetura HMVC.",
 	"keywords": ["rest", "router", "psr7"],
+	"license": "MIT",
 	"authors": [
 		{
 			"name": "Leonardo Leal da Rosa",
