@@ -12,7 +12,7 @@ return [
 //		'user' => '\App\Auth\User',
 		'defaultModule' => 'usuario',
 		'defaultModuleRoute' => '[/]',
-		'defaultSecure' => true, // Rotas de módulos que não tem informação definida de segurança são seguros?
+		'defaultSecure' => false, // Rotas de módulos que não tem informação definida de segurança são seguros?
 		// Dados de conexão ao banco de dados
 		'db' => [
 			'dsn' => 'mysql://root:123456@127.0.0.1/core',

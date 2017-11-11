@@ -2,11 +2,14 @@
 
 namespace Core\Data;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Arr;
 
 class Model extends Eloquent
 {
+	private $connLv = 0;
+
 	protected $aliases = [];
 
 	public function getAlias($field, $fallback = null) : ?string
@@ -56,5 +59,119 @@ class Model extends Eloquent
 	{
 		$key = $this->getFromAlias($key);
 		return parent::__get($key);
+	}
+
+	protected function beforeInsert()
+	{
+	}
+
+	protected function afterInsert()
+	{
+	}
+
+	protected function beforeUpdate()
+	{
+	}
+
+	protected function afterUpdate()
+	{
+	}
+
+	protected function beforeDelete()
+	{
+	}
+
+	protected function afterDelete()
+	{
+	}
+
+	protected function beforeCommit()
+	{
+	}
+
+	protected function afterCommit()
+	{
+	}
+
+	protected function beforeRollback()
+	{
+	}
+
+	protected function afterRollback()
+	{
+	}
+
+	protected function performInsert(Builder $query)
+	{
+		$this->beginTransaction();
+		$this->beforeInsert();
+		$result = parent::performInsert($query);
+		$this->afterInsert();
+		if ($result) {
+			$this->commit();
+		} else {
+			$this->rollback();
+		}
+		return $result;
+	}
+
+	protected function performUpdate(Builder $query)
+	{
+		$this->beginTransaction();
+		$this->beforeUpdate();
+		$result = parent::performUpdate($query);
+		$this->afterUpdate();
+		if ($result) {
+			$this->commit();
+		} else {
+			$this->rollback();
+		}
+		return $result;
+	}
+
+	protected function performDeleteOnModel()
+	{
+		$this->beginTransaction();
+		$this->beforeDelete();
+		$result = parent::performDeleteOnModel();
+		$this->afterDelete();
+		if ($result) {
+			$this->commit();
+		} else {
+			$this->rollback();
+		}
+		return $result;
+	}
+
+	final private function beginTransaction()
+	{
+		$this->connLv++;
+		if ($this->connLv == 1) {
+			$this->getConnection()->beginTransaction();
+		}
+	}
+
+	final private function commit()
+	{
+		if ($this->connLv > 0) {
+			$this->connLv--;
+		}
+		if ($this->connLv == 0) {
+			$this->beforeCommit();
+			$this->getConnection()->commit();
+			$this->afterCommit();
+		}
+	}
+
+	final private function rollback()
+	{
+		if ($this->connLv > 0) {
+			$this->connLv--;
+		}
+		if ($this->connLv == 0) {
+			$this->beforeRollback();
+			$this->getConnection()->rollBack();
+			$this->afterRollback();
+		}
 	}
 }
