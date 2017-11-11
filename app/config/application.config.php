@@ -16,6 +16,7 @@ return [
 		// Dados de conexão ao banco de dados
 		'db' => [
 			'dsn' => 'mysql://root:123456@127.0.0.1/core',
+			'engine' => 'innodb'
 		],
 		// Tipo de conteúdo padrão do sistema
 		'defaultContentType' => 'text/html',

@@ -114,6 +114,7 @@ class App
 			$this->capsule->addConnection(array_merge_recursive_distinct( $config->toArray(), [
 				'charset' => 'utf8',
 				'collation' => 'utf8_unicode_ci',
+				'engine' => config('system.db.engine', null)
 			]));
 			$this->capsule->bootEloquent();
 			$this->capsule->setAsGlobal();

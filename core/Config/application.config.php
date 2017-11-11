@@ -36,11 +36,8 @@ return [
 			//'user' => 'root',
 			//'pass' => '123456',
 			//'base' => 'rcore'
-		],
-		// Lista de provedores de dados
-		'provider' => [
-			'mysql' => 'MySQL',
-			'mysqli' => 'MySQLi'
+			// Alternately you can add to define the engine type for MySQL
+			//'engine' => 'innodb'
 		],
 		// Configurações do roteador Slim
 		'slim' => [
