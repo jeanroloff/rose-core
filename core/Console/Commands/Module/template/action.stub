@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Modules\{{module_studly}};
+
+use Core\Action\Action;
+use Slim\Http\Response;
+
+class Action{{module_studly}}{{action}} extends Action
+{
+    public function execute()
+    {
+        // TODO: Implement this action's execution
+    }
+
+    public function getOutput() : Response
+    {
+        // TODO: Implement this action's output response
+    }
+}

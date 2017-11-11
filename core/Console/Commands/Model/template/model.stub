@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Model;
+
+use Core\Data\Model;
+
+class {{class}} extends Model
+{
+	protected $table = '{{table}}';
+}

@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Modules\{{module_studly}};
+
+use Core\Controller\Controller;
+
+class {{module_studly}}Controller extends Controller
+{
+
+}

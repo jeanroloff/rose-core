@@ -1,0 +1,17 @@
+RewriteEngine on
+<ifModule fcgid_module>
+RewriteRule .* - [env=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</ifModule>
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule . index.php [L]
+
+<Files *.yml>
+    Deny from all
+</Files>
+<Files *.json>
+    Deny from all
+</Files>
+<Files .*>
+    Deny from all
+</Files>
