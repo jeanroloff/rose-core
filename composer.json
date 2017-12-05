@@ -17,6 +17,7 @@
 		"psr-4" : {
 			"App\\" : "app/",
 		  	"App\\Modules\\": "app/modules",
+		  	"App\\Database\\": "app/database",
 		  	"App\\Model\\": "app/database/model",
 		 	"App\\Console\\": "app/console",
 			"Core\\" : "core/"
