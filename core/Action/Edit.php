@@ -24,7 +24,7 @@ class Edit extends Input
 	public function execute()
 	{
 		try {
-			$this->model = $this->model::findOrFail($this->args['id']);
+			$this->model = $this->model::withRelations()->findOrFail($this->args['id']);
 		} catch (ModelNotFoundException $e) {
 			throw new Message($e->getMessage(), 404);
 		}

@@ -16,7 +16,9 @@ return [
 		// Dados de conexão ao banco de dados
 		'db' => [
 			'dsn' => 'mysql://root:123456@127.0.0.1/core',
-			'engine' => 'innodb'
+			'engine' => 'innodb',
+			'afterConnect' => function(\Core\App $app, \Illuminate\Database\Capsule\Manager $capsule) {
+			}
 		],
 		// Tipo de conteúdo padrão do sistema
 		'defaultContentType' => 'text/html',
@@ -49,7 +51,7 @@ return [
 			}
 		],
 		// Template
-		'templatePath' => function(\Core\Action\Action $action) : ?string {
+		'templatePath' => function(\Core\Action\Action $action, $routeConfig) : ?string {
 			return null;
 		}
 	], $stationInfo),

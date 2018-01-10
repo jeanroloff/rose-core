@@ -6,8 +6,6 @@ use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\Grammars\Grammar;
 use Illuminate\Database\Query\Processors\Processor;
-use Illuminate\Support\Str;
-use MongoDB\Driver\Query;
 
 class QueryBuilder extends Builder
 {
@@ -30,8 +28,10 @@ class QueryBuilder extends Builder
 
 	protected function setColumnAliases()
 	{
-		foreach ($this->columns as $k => $column) {
-			$this->columns[$k] = $this->model->getFromAlias($column, $column);
+		if (is_array($this->columns)) {
+			foreach ($this->columns as $k => $column) {
+				$this->columns[$k] = $this->model->getFromAlias($column, $column);
+			}
 		}
 	}
 
@@ -41,7 +41,9 @@ class QueryBuilder extends Builder
 			if ($clause['type'] == "Nested") {
 				$this->setWhereAliases($clause['query']);
 			} else {
-				$builder->wheres[$k]['column'] = $this->model->getFromAlias($builder->wheres[$k]['column'], $builder->wheres[$k]['column']);
+				if (is_array($builder->wheres[$k])) {
+					$builder->wheres[$k]['column'] = $this->model->getFromAlias(@$builder->wheres[$k]['column'], @$builder->wheres[$k]['column']);
+				}
 			}
 		}
 	}

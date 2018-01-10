@@ -29,6 +29,7 @@ class Controller implements IController
 
 	public function __invoke(Request $request, Response $response, array $args) : Response
 	{
+		Http::setContentType($request->getContentType());
 		$this->request = $request;
 		$this->response = $response;
 		if ($this->config['secure'] && !$this->authorize($this->config['module'], $this->config['pattern'])) {
@@ -62,6 +63,11 @@ class Controller implements IController
 	public function getResponse() : Response
 	{
 		return $this->response;
+	}
+
+	public function getRequest() : Request
+	{
+		return $this->request;
 	}
 
 	public function getRoute() : array

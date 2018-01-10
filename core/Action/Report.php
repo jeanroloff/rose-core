@@ -3,7 +3,6 @@
 namespace Core\Action;
 
 use Core\Controller\IController;
-use Core\Data\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 
@@ -56,14 +55,14 @@ class Report extends Output
 
 	protected function filterModel()
 	{
-		$model = $this->model;
+		$model = $this->model::withRelations();
 		foreach ($this->filterReservedArgs() as $name => $value) {
 			$model = $this->filterArgByName($model, $name, $value);
 		}
 		return $model;
 	}
 
-	protected function filterArgByName(Model $model, $name, $value)
+	protected function filterArgByName($model, $name, $value)
 	{
 		if (is_array($value)) {
 			if (count($value) == 2) {
@@ -79,7 +78,7 @@ class Report extends Output
 		return $model;
 	}
 
-	protected function setOrderBy(Model $model)
+	protected function setOrderBy($model)
 	{
 		if (isset($this->args['order'])) {
 			$model = $model->orderBy($this->args['order'], Str::lower($this->args['orderType']));

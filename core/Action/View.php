@@ -22,11 +22,13 @@ class View extends Output
 
 	public function execute()
 	{
-		$this->model = $this->model::find($this->args['id']);
+		$this->model = $this->model::withRelations()->find($this->args['id']);
 	}
 
 	public function setOutputData()
 	{
-		$this->outputData = $this->model->toArray();
+		if ($this->model != null) {
+			$this->outputData = $this->model->toArray();
+		}
 	}
 }

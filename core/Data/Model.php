@@ -4,6 +4,7 @@ namespace Core\Data;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
 
 class Model extends Eloquent
@@ -11,6 +12,11 @@ class Model extends Eloquent
 	private $connLv = 0;
 
 	protected $aliases = [];
+
+	protected function setDefaultAttributes(array $attributes)
+	{
+		$this->setRawAttributes(array_merge($this->attributes, $attributes), true);
+	}
 
 	public function getAlias($field, $fallback = null) : ?string
 	{
@@ -52,6 +58,9 @@ class Model extends Eloquent
 	public function __set($key, $value)
 	{
 		$key = $this->getFromAlias($key);
+		if (!is_array($value) && trim($value) === '') {
+			$value = null;
+		}
 		parent::__set($key, $value);
 	}
 
@@ -132,15 +141,15 @@ class Model extends Eloquent
 	protected function performDeleteOnModel()
 	{
 		$this->beginTransaction();
-		$this->beforeDelete();
-		$result = parent::performDeleteOnModel();
-		$this->afterDelete();
-		if ($result) {
+		try {
+			$this->beforeDelete();
+			parent::performDeleteOnModel();
+			$this->afterDelete();
 			$this->commit();
-		} else {
+		} catch (\Exception $e) {
 			$this->rollback();
+			throw $e;
 		}
-		return $result;
 	}
 
 	final private function beginTransaction()
@@ -173,5 +182,39 @@ class Model extends Eloquent
 			$this->getConnection()->rollBack();
 			$this->afterRollback();
 		}
+	}
+
+	public static function relationships()
+	{
+		$model = new static;
+		$relationships = [];
+		foreach((new \ReflectionClass($model))->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+			if ($method->class != get_class($model) ||
+				!empty($method->getParameters()) ||
+				$method->getName() == __FUNCTION__) {
+				continue;
+			}
+			try {
+				$return = $method->invoke($model);
+				if ($return instanceof Relation) {
+					$relationships[$method->getName()] = [
+						'type' => (new \ReflectionClass($return))->getShortName(),
+						'model' => (new \ReflectionClass($return->getRelated()))->getName()
+					];
+				}
+			} catch(\ErrorException $e) {}
+		}
+		return $relationships;
+	}
+
+	public static function withRelations()
+	{
+		$relations = @array_keys(self::relationships());
+		if ($relations != null) {
+			$model = self::with($relations);
+		} else {
+			$model = new static;
+		}
+		return $model;
 	}
 }

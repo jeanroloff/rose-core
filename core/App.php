@@ -3,6 +3,7 @@ namespace Core;
 
 use Core\Config\DbConfig;
 use Core\Exception\EmptyConfigException;
+use Core\Http\Http;
 use Core\Router\AppRouter;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Support\Str;
@@ -14,6 +15,10 @@ require __DIR__ . '/Config/base.php';
 
 class App
 {
+	/**
+	 * Instance of Slim App
+	 * @var \Slim\App
+	 */
 	public $slim;
 
 	private $capsule;
@@ -25,8 +30,8 @@ class App
 		$this->INIT_TIME = microtime(true);
 		set_exception_handler(config('system.errors.handler'));
 		$this->buildSlim();
-		$this->registerDatabase();
 		$this->initialize();
+		$this->registerDatabase();
 	}
 
 	public static function &getInstance() : App
@@ -119,6 +124,10 @@ class App
 			$this->capsule->bootEloquent();
 			$this->capsule->setAsGlobal();
 		} catch (EmptyConfigException $e){}
+		$afterConnect = config('system.db.afterConnect');
+		if ($afterConnect instanceof \Closure) {
+			call_user_func_array($afterConnect, [$this, $this->capsule]);
+		}
 	}
 
 	public function getCapsule() : Capsule

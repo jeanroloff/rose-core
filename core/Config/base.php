@@ -26,3 +26,6 @@ if (!defined('BASE_URL')) {
 if (!defined('TEMPLATE_PATH')) {
 	define('TEMPLATE_PATH', APP_PATH . '/template/');
 }
+if (!defined('TEMPLATE_URL')){
+	define('TEMPLATE_URL', 'app/template/');
+}

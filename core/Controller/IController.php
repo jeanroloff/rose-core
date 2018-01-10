@@ -22,5 +22,7 @@ interface IController
 
 	public function getResponse() : Response;
 
+	public function getRequest() : Request;
+
 	public function getRoute() : array;
 }

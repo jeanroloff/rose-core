@@ -81,7 +81,7 @@ class ModuleRouter
 		$route['module'] = $this->module['name'];
 		$route['base_pattern'] = $route['pattern'];
 		if ($route['method'] == '*'){
-			$route['method'] = 'GET,POST,PUT,DELETE';
+			$route['method'] = 'GET,POST,PATCH,DELETE';
 		}
 		if ($route['pattern'] == '/') {
 			$route['pattern'] = '[/]';
@@ -89,7 +89,7 @@ class ModuleRouter
 		if (!isset($route['secure'])) {
 			$route['secure'] = $this->secure;
 		}
-		if ($this->isDefaultModule && $route['pattern'] == config('system.defaultModuleRoute')) {
+		if ($this->isDefaultModule && $route['pattern'] == config('system.defaultModuleRoute') && empty($this->defaultRoute)) {
 			$conf = $route;
 			$conf['pattern'] = "";
 			$this->defaultRoute = $conf;

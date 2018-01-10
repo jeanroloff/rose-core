@@ -24,9 +24,9 @@ class Make extends Base
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$result = $this->call('module:make:map');
+		$result = $this->call('module:make:map', $input, $output);
 		if ($input->getArgument('controller') == 'true') {
-			$result = $this->call('module:make:controller');
+			$result = $this->call('module:make:controller', $input, $output);
 		}
 		return $result;
 	}

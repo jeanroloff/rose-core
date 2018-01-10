@@ -10,7 +10,7 @@ class User implements IUser
 
 	protected $isAuthenticated;
 
-	private function __construct()
+	protected function __construct()
 	{
 		$this->properties = [];
 		$this->isAuthenticated = !config('system.defaultSecure');

@@ -35,9 +35,12 @@ return [
 			//'host' => 'localhost',
 			//'user' => 'root',
 			//'pass' => '123456',
-			//'base' => 'rcore'
+			//'base' => 'rcore',
 			// Alternately you can add to define the engine type for MySQL
-			//'engine' => 'innodb'
+			// 'engine' => 'innodb',
+			// You can also define things to be executed after the database is booted
+			// 'afterConnect' => function(\Core\App $app, \Illuminate\Database\Capsule\Manager $capsule) {
+			// }
 		],
 		// Configurações do roteador Slim
 		'slim' => [

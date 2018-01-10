@@ -34,22 +34,21 @@ class Output extends Action
 	{
 		$routeConfig = $this->controller->getRoute();
 		if (!empty($routeConfig['view'])) {
-			$path = $this->getTemplatePath();
-			if ($path === null) {
-				$basePath = str_replace(BASE_PATH, '', $routeConfig['path']);
-				$path = $basePath . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . $routeConfig['view'];
+			$basePath = $this->getTemplatePath($routeConfig);
+			if ($basePath === null) {
+				$basePath = str_replace(BASE_PATH, '', $routeConfig['path']) . DIRECTORY_SEPARATOR . 'View';
 			}
-			return $path;
+			return $basePath . DIRECTORY_SEPARATOR . $routeConfig['view'];
 		}
 		return null;
 	}
 
-	protected function getTemplatePath() : ?string
+	protected function getTemplatePath($routeConfig) : ?string
 	{
 		$path = null;
 		$conf = config('system.templatePath');
 		if ($conf instanceof \Closure) {
-			$path = call_user_func_array($conf, [$this]);
+			$path = call_user_func_array($conf, [$this, $routeConfig]);
 		}
 		return $path;
 	}
@@ -59,6 +58,7 @@ class Output extends Action
 		$tplArgs['action'] = $this;
 		$tplArgs['args'] = $this->args;
 		$tplArgs['data'] = $this->outputData;
+		$tplArgs['request'] = $this->controller->getRequest();
 		if (isset($this->model)) {
 			$tplArgs['model'] = $this->model;
 		}

@@ -175,8 +175,7 @@ function resolveBoolean($value, $fallback = null)
 function getFullUrl($addParams = true)
 {
 	if (!empty($_SERVER['HTTP_HOST'])) {
-		$protocol = strpos(strtolower(@$_SERVER['SERVER_PROTOCOL']), 'https') ===
-		FALSE ? 'http' : 'https';            // Get protocol HTTP/HTTPS
+		$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) === FALSE ? 'http' : 'https';            // Get protocol HTTP/HTTPS
 		$host = $_SERVER['HTTP_HOST'];   // Get  www.domain.com
 		$script = dirname($_SERVER['SCRIPT_NAME']) . '/'; // Get folder/file.php
 		$params = $_SERVER['QUERY_STRING'];// Get Parameters occupation=odesk&name=ashik
@@ -209,4 +208,15 @@ function exceptionHandler($e)
 	} else {
 		echo $e;
 	}
+}
+
+/**
+ * Shortcut for getting user object information
+ *
+ * @param $info
+ * @param null $fallback
+ * @return mixed
+ */
+function user($info, $fallback = null) {
+	return \Core\Auth\User::getInstance()->getProperty($info, $fallback);
 }

@@ -16,8 +16,10 @@
 	"autoload" : {
 		"psr-4" : {
 			"App\\" : "app/",
+		  	"App\\Base\\" : "app/base",
 		  	"App\\Modules\\": "app/modules",
 		  	"App\\Database\\": "app/database",
+		  	"App\\Database\\Scopes\\": "app/database/scopes",
 		  	"App\\Model\\": "app/database/model",
 		 	"App\\Console\\": "app/console",
 			"Core\\" : "core/"

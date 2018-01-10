@@ -14,24 +14,31 @@ class Http
 
 	public static function init()
 	{
-		self::setContentType();
+		static $init;
+		if (!isset($init)) {
+			self::setContentType();
+			$init=true;
+		}
 	}
 
 	public static function setContentType($value = null)
 	{
-		if ($value == null && is_callable('getallheaders')) {
-			$headers = getallheaders();
-			foreach ($headers as $k => $v) {
-				if (Str::contains($k, "content-type")) {
-					$value = $v;
+		if ($value != null || self::$contentType == null) {
+			if ($value == null && is_callable('getallheaders')) {
+				$headers = getallheaders();
+				foreach ($headers as $k => $v) {
+					if (Str::contains(Str::lower($k), "content-type") !== false) {
+						$value = $v;
+					}
 				}
 			}
+			self::$contentType = $value;
 		}
-		self::$contentType = $value;
 	}
 
 	public static function getContentType()
 	{
+		self::init();
 		if (self::$contentType == null) {
 			return config('system.defaultContentType', 'application/json');
 		}
