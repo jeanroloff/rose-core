@@ -33,6 +33,7 @@
 	  	"robmorgan/phinx": "*",
 		"illuminate/database": "5.*",
 		"illuminate/pagination": "^5.5",
-		"symfony/console": "*"
+		"symfony/console": "*",
+	  	"hellogerard/jobby": "*"
 	}
 }

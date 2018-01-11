@@ -66,7 +66,25 @@ return [
 		'console' => [
 			'commands' => APP_PATH . "/console/",
 			'ignore' => []
-		]
+		],
+		// Cron Jobs
+		'cron' => function(\Core\System\Cron\Cron &$scheduler) {
+//			 Example:
+//			 @see https://github.com/jobbyphp/jobby
+//			$scheduler
+//				->closure(function(){
+//						echo date('Y-m-d H:i:s'), PHP_EOL;
+//						return true;
+//				})
+//				->everyMinute()
+//				->output( BASE_PATH . 'cron_log.log');
+		},
+		// Notificações
+		// - Conjunto de notificações a serem enviadas quando a próxima execução de CRON for acionada.
+		'notification' => function() {
+//			Example:
+//			\core\System\NotificationService::send( new MyEmailNotification("This is a message to be send by cron mail!"));
+		}
 	],
 	// Lista de módulos do sistema
 	'modules' => [
