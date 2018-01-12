@@ -1,11 +1,9 @@
 <?php
 
-namespace core\System;
+namespace Core\System;
 
 interface INotification
 {
-	public function __construct($data);
-
 	public function send() : bool;
 
 	public function onSuccess();

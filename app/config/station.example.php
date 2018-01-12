@@ -20,6 +20,6 @@ return [
 		'display' => true,
 		'log' => true,
 		'backtrace' => true,
-		'save_dir' => BASE_DIR . '/Tmp/Error'
+		'save_dir' => BASE_PATH . '/Tmp/Error'
 	]
 ];

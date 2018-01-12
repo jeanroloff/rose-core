@@ -1,6 +1,8 @@
 <?php
 
-namespace core\System;
+namespace Core\System;
+
+use Core\App;
 
 class NotificationService
 {
@@ -12,30 +14,16 @@ class NotificationService
 
 	public static function setListFromSystem()
 	{
-		$config = config('system.notifications');
+		$config = config('system.notification');
 		if ($config instanceof \Closure || is_callable($config)) {
-			call_user_func_array($config);
+			call_user_func_array($config,[]);
 		}
 	}
 
 	public static function send(INotification $notification, $now = false)
 	{
-		if ($now) {
-			self::sendNow($notification);
-		} else {
-			self::$list[] = $notification;
-		}
+		self::$list[] = $notification;
 	}
-
-	public static function sendNow(INotification $notification)
-	{
-		if ($notification->send()) {
-			$notification->onSuccess();
-		} else {
-			$notification->onError();
-		}
-	}
-
 	/**
 	 * @return INotification[]
 	 */

@@ -2,8 +2,9 @@
 
 namespace Core\Console\Commands\Cron;
 
+use Core\App;
 use Core\System\Cron\Cron;
-use core\System\NotificationService;
+use Core\System\NotificationService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,6 +27,7 @@ class CronExecute extends Command
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		App::getInstance();
 		$this->scheduler = new Cron();
 		$this->setJobs();
 		$this->setNotifications();
@@ -46,7 +48,18 @@ class CronExecute extends Command
 		$list = NotificationService::list();
 		foreach ($list as $notification) {
 			$this->scheduler->closure(function () use ($notification) {
-				NotificationService::sendNow($notification);
+				try {
+					App::getInstance();
+					if ($notification->send()) {
+						$notification->onSuccess();
+					} else {
+						$notification->onError();
+					}
+				} catch (\Exception $e) {
+					echo "Error: " . $e->getMessage();
+					return false;
+				}
+				return true;
 			})->everyMinute();
 		}
 	}
