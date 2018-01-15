@@ -14,21 +14,22 @@ class Cron extends Jobby
 		return "__INTERNAL_JOB__".count($this->jobs);
 	}
 
-	public function include($command, $value) : Job
+	public function include($command, $value, $jobName = null) : Job
 	{
+		$jobName = $jobName ?? $this->getJobName();
 		$job = new Job($command, $value);
-		$this->jobList[$this->getJobName()] = $job;
+		$this->jobList[$jobName] = $job;
 		return $job;
 	}
 
-	public function closure(\Closure $value) : Job
+	public function closure(\Closure $value, $jobName = null) : Job
 	{
-		return $this->include("closure", $value);
+		return $this->include("closure", $value, $jobName);
 	}
 
-	public function command($value) : Job
+	public function command($value, $jobName = null) : Job
 	{
-		return $this->include("command", $value);
+		return $this->include("command", $value, $jobName);
 	}
 
 	public function run()

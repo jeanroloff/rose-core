@@ -9,4 +9,6 @@ interface INotification
 	public function onSuccess();
 
 	public function onError();
+
+	public function getId() : string;
 }

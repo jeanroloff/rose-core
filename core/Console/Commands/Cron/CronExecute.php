@@ -60,7 +60,7 @@ class CronExecute extends Command
 					return false;
 				}
 				return true;
-			})->everyMinute();
+			}, "__NOTIFICATION__".$notification->getId())->everyMinute();
 		}
 	}
 }
