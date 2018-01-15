@@ -8,7 +8,15 @@ if (!defined('CORE_PATH')) {
 	define('CORE_PATH', realpath(__DIR__ . '/../') . DIRECTORY_SEPARATOR);
 }
 if (!defined('BASE_PATH')) {
-	define('BASE_PATH', realpath(CORE_PATH . '/../') . DIRECTORY_SEPARATOR);
+	if (is_dir(CORE_PATH . "/../vendor/")) {
+		define('BASE_PATH', realpath(CORE_PATH . '/../') . DIRECTORY_SEPARATOR);
+	} else {
+		// Assume-se que a raiz esteja logo acima da pasta "vendor"
+		define('BASE_PATH', realpath(CORE_PATH . '/../../../../') . DIRECTORY_SEPARATOR);
+	}
+}
+if (!is_dir(BASE_PATH)) {
+	throw new \Exception("Configuração BASE_PATH não definida ou inválida. Atual: " . BASE_PATH);
 }
 if (!defined('APP_PATH')) {
 	define('APP_PATH', realpath(BASE_PATH . '/app/') . DIRECTORY_SEPARATOR);
