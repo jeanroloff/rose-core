@@ -44,6 +44,7 @@ class Cron extends Jobby
 				if (stripos($contentType, 'json') !==false) {
 					if (($result = json_decode($data))!==false) {
 						echo \jsonpp($data);
+						return true;
 					}
 					throw new \Exception("Unable to call the path \"{$path}\" with method \"{$method}\": " . $data);
 				}
