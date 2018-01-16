@@ -32,6 +32,30 @@ class Cron extends Jobby
 		return $this->include("command", $value, $jobName);
 	}
 
+	public function call($path, $jobName = null, $method = 'GET', $query = '', $contentType = 'application/json', $headers = []) : Job
+	{
+		return $this->closure(function () use ($path, $method, $query, $contentType, $headers){
+			try {
+				$slim = \Core\App::getInstance()->slim;
+				$ctype = \Core\Http\Http::getContentType();
+				$headers['content-type'] = $contentType;
+				$data = $slim->subRequest($method, $path, $query, $headers)->getBody()->__toString();
+				\Core\Http\Http::setContentType($ctype);
+				if (stripos($contentType, 'json') !==false) {
+					if (($result = json_decode($data))!==false) {
+						echo $result;
+					}
+					throw new \Exception("Unable to call the path \"{$path}\" with method \"{$method}\": " . $data);
+				}
+				echo $data;
+				return true;
+			} catch (\Exception $e) {
+				echo "Error: " . $e->getMessage();
+				return false;
+			}
+		}, $jobName);
+	}
+
 	public function run()
 	{
 		foreach ($this->jobList as $name => $job) {
