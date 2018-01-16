@@ -43,11 +43,11 @@ class Cron extends Jobby
 				\Core\Http\Http::setContentType($ctype);
 				if (stripos($contentType, 'json') !==false) {
 					if (($result = json_decode($data))!==false) {
-						echo $result;
+						echo \jsonpp($data);
 					}
 					throw new \Exception("Unable to call the path \"{$path}\" with method \"{$method}\": " . $data);
 				}
-				echo $data;
+				print_r($data);
 				return true;
 			} catch (\Exception $e) {
 				echo "Error: " . $e->getMessage();
