@@ -47,9 +47,12 @@ class CronExecute extends Command
 		NotificationService::setListFromSystem();
 		$list = NotificationService::list();
 		foreach ($list as $notification) {
-			$this->scheduler->closure(function () use ($notification) {
+			$class = get_class($notification);
+			$id = $notification->id;
+			$this->scheduler->closure(function () use ($class, $id) {
 				try {
 					App::getInstance();
+					$notification = (new $class)::find($id);
 					if ($notification->send()) {
 						$notification->onSuccess();
 					} else {
@@ -57,10 +60,10 @@ class CronExecute extends Command
 					}
 				} catch (\Exception $e) {
 					echo "Error: " . $e->getMessage();
-					return false;
+					return true;
 				}
 				return true;
-			}, "__NOTIFICATION__".$notification->getId())->everyMinute();
+			}, "__NOTIFICATION__".$notification->getId())->everyMinute()->output(BASE_PATH . 'log.log');
 		}
 	}
 }
