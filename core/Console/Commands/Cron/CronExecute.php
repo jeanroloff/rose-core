@@ -63,7 +63,7 @@ class CronExecute extends Command
 					return true;
 				}
 				return true;
-			}, "__NOTIFICATION__".$notification->getId())->everyMinute()->output(BASE_PATH . 'log.log');
+			}, "__NOTIFICATION__".$notification->getId())->everyMinute()/*->output(BASE_PATH . 'log.log')*/;
 		}
 	}
 }
