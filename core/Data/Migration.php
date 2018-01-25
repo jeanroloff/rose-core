@@ -16,4 +16,11 @@ class Migration extends AbstractMigration
 		$this->capsule = App::getInstance()->getCapsule();
 		$this->schema = $this->capsule->schema();
 	}
+
+	protected function dropTableIfExists($tableName)
+	{
+		if ($this->hasTable($tableName)) {
+			$this->dropTable($tableName);
+		}
+	}
 }

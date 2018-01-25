@@ -28,7 +28,7 @@ class View extends Output
 	public function setOutputData()
 	{
 		if ($this->model != null) {
-			$this->outputData = $this->model->toArray();
+			$this->outputData = $this->model;
 		}
 	}
 }

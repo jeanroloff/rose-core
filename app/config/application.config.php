@@ -10,7 +10,7 @@ return [
 		// Classes de autenticação
 //		'authorizer' => '\App\Auth\Authorizer',
 //		'user' => '\App\Auth\User',
-		'defaultModule' => 'usuario',
+		'defaultModule' => 'user',
 		'defaultModuleRoute' => '[/]',
 		'defaultSecure' => false, // Rotas de módulos que não tem informação definida de segurança são seguros?
 		// Dados de conexão ao banco de dados
@@ -75,6 +75,6 @@ return [
 	], $stationInfo),
 	// Lista de módulos do sistema
 	'modules' => [
-		'usuario' => [ 'path' => BASE_PATH . 'app/modules/Usuario', 'model' => \App\Model\UsuarioModel::class ]
+		'user' => [ 'path' => BASE_PATH . 'app/modules/User', 'model' => \App\Model\UserModel::class ]
 	]
 ];
