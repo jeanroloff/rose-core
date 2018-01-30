@@ -112,28 +112,38 @@ class Model extends Eloquent
 
 	protected function performInsert(Builder $query)
 	{
-		$this->beginTransaction();
-		$this->beforeInsert();
-		$result = parent::performInsert($query);
-		$this->afterInsert();
-		if ($result) {
-			$this->commit();
-		} else {
+		try {
+			$this->beginTransaction();
+			$this->beforeInsert();
+			$result = parent::performInsert($query);
+			$this->afterInsert();
+			if ($result) {
+				$this->commit();
+			} else {
+				$this->rollback();
+			}
+		} catch (\Exception $e) {
 			$this->rollback();
+			throw $e;
 		}
 		return $result;
 	}
 
 	protected function performUpdate(Builder $query)
 	{
-		$this->beginTransaction();
-		$this->beforeUpdate();
-		$result = parent::performUpdate($query);
-		$this->afterUpdate();
-		if ($result) {
-			$this->commit();
-		} else {
+		try {
+			$this->beginTransaction();
+			$this->beforeUpdate();
+			$result = parent::performUpdate($query);
+			$this->afterUpdate();
+			if ($result) {
+				$this->commit();
+			} else {
+				$this->rollback();
+			}
+		} catch (\Exception $e) {
 			$this->rollback();
+			throw $e;
 		}
 		return $result;
 	}
