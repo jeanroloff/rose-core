@@ -24,7 +24,9 @@ class ExceptionHandler
 		} else {
 			$obj = new Response( $e->getMessage(), 500 );
 		}
-		self::logObject( $e );
+		if ($config['log']) {
+			self::logObject($e);
+		}
 		self::sendResponse( $obj );
 	}
 
@@ -86,7 +88,9 @@ class ExceptionHandler
 		foreach ($response->getHeaders() as $name => $values) {
 			header( sprintf('%s: %s', $name, $response->getHeaderLine($name)) );
 		}
-		echo $response->getBody(true);
+		if (config('system.error.display')) {
+			echo $response->getBody(true);
+		}
 	}
 
 	/**
@@ -96,6 +100,17 @@ class ExceptionHandler
 	 */
 	private static function logObject( $obj )
 	{
-
+		$path = config('system.errors.save_dir');
+		if ($path != null) {
+			if (!is_dir($path)) {
+				@mkdir($path, 0755);
+			}
+			$name = strftime(config('system.errors.file_name'));
+			if($name != '' && @touch($path.DIRECTORY_SEPARATOR.$name)){
+				@error_log(PHP_EOL . $obj . PHP_EOL, 3, $path.DIRECTORY_SEPARATOR.$name);
+			} else {
+				@error_log(PHP_EOL . $obj . PHP_EOL, 0);
+			}
+		}
 	}
 }

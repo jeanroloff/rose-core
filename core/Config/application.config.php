@@ -23,10 +23,9 @@ return [
 			'display' => false,
 			'backtrace' => true,
 			'log' => true,
-			'save_dir' => CORE_PATH . '/../',
+			'save_dir' => null,
 			'file_name' => 'errorlog_%Y%m%d_%H.log',
-			'db_file_name' => 'dberrorlog_%Y%m%d_%H.log',
-			'handler' => 'exceptionHandler'
+			'handler' => 'ExceptionHandler'
 		],
 		// Configurações de banco de dados
 		'db' => [
