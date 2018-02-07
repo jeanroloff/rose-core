@@ -47,7 +47,7 @@ class MakeModel extends StubCommand
 			$table = Str::lower(Str::snake($class));
 		}
 		return [
-			$class."Model",
+			(substr($class, -5) == 'Model' ? $class : $class."Model"),
 			$table
 		];
 	}
