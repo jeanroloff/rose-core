@@ -36,7 +36,7 @@ class Output extends Action
 		if (!empty($routeConfig['view'])) {
 			$basePath = $this->getTemplatePath($routeConfig);
 			if ($basePath === null) {
-				$basePath = str_replace(BASE_PATH, '', $routeConfig['path']) . DIRECTORY_SEPARATOR . 'View';
+				$basePath = str_replace(BASE_PATH, '', $routeConfig['path']) . DIRECTORY_SEPARATOR . 'view';
 			}
 			return $basePath . DIRECTORY_SEPARATOR . $routeConfig['view'];
 		}

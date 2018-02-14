@@ -18,7 +18,10 @@ interface IAction
 
 	public function execute();
 
+	public function setOutputData();
+
 	public function getOutput() : Response;
 
 	public function getResponseCode() : int;
+
 }
