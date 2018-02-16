@@ -44,6 +44,26 @@ class Report extends Output
 			'size' => $list->perPage(),
 			'total' => $list->total()
 		];
+		$this->setPaginationAttributes($list);
+	}
+
+	protected function setPaginationAttributes(LengthAwarePaginator $list)
+	{
+		$this->outputData['pagination'] = [
+			'current' => [ 'id' => $list->currentPage(), 'url' => $this->getPageUrl($list->currentPage()) ],
+			'previous' => ($list->currentPage() > 1 ? [ 'id' => $list->currentPage(), 'url' => $this->getPageUrl($list->currentPage() - 1) ] : []),
+			'next' => ($list->lastPage() > $list->currentPage() ? [ 'id' => $list->currentPage(), 'url' => $this->getPageUrl($list->currentPage() + 1) ] : []),
+			'first' => ($list->lastPage() > 1 ? [ 'id' => 1, 'url' => $this->getPageUrl(1) ] : []),
+			'last' =>  ($list->lastPage() > 1 ? [ 'id' => $list->lastPage(), 'url' => $this->getPageUrl($list->lastPage()) ] : [])
+		];
+		for ($i=1; $i<= $list->lastPage(); $i++) {
+			$this->outputData['pagination']['list'][$i] = ['id' => $i, 'url' => $this->getPageUrl($i)];
+		}
+	}
+
+	protected function getPageUrl($page)
+	{
+		return $this->controller->getRequest()->getUri()->withQuery("page={$page}")->__toString();
 	}
 
 	protected function getList() : LengthAwarePaginator

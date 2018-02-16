@@ -74,7 +74,12 @@ return [
 		}
 	], $stationInfo),
 	// Lista de módulos do sistema
-	'modules' => [
-		'user' => [ 'path' => BASE_PATH . 'app/modules/User', 'model' => \App\Model\UserModel::class ]
-	]
+	'modules' => function() {
+		// Lista de módulos em arquivo separado
+		$appModules = is_file(APP_PATH . '/config/application.modules.php') ? include_once APP_PATH . '/config/application.modules.php' : [];
+		return array_merge_recursive_distinct([
+			// Lista padrão de módulos
+			'user' => ['path' => BASE_PATH . 'app/modules/User', 'model' => \App\Model\UserModel::class]
+		], $appModules);
+	}
 ];

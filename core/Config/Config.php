@@ -16,6 +16,9 @@ class Config extends \ArrayObject
 			}
 		}
 		Arr::set($this, 'system', $info['config']);
+		if ($info['modules'] instanceof \Closure) {
+			$info['modules'] = call_user_func_array($info['modules'],[]);
+		}
 		Arr::set($this, 'modules', $info['modules']);
 	}
 

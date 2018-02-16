@@ -29,9 +29,9 @@ class App
 	{
 		$this->INIT_TIME = microtime(true);
 		set_exception_handler(config('system.errors.handler'));
+		$this->registerDatabase();
 		$this->buildSlim();
 		$this->initialize();
-		$this->registerDatabase();
 	}
 
 	public static function &getInstance() : App
@@ -104,10 +104,12 @@ class App
 
 	private function setTwigIncludes(&$view)
 	{
-		if (is_file(APP_PATH . 'twigincludes.php')) {
-			global $twig;
-			$twig = $view;
-			include_once APP_PATH . 'twigincludes.php';
+		global $twig;
+		$twig = $view;
+		foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(BASE_PATH)) as $file) {
+			if (stripos($file, "twigincludes.php")!==false) {
+				include_once $file;
+			}
 		}
 	}
 
