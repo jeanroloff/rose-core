@@ -54,7 +54,7 @@ class ExceptionHandler
 			$error->file = $e->getFile();
 			$error->line = $e->getLine();
 			if ($config['backtrace']) {
-				$error->trace = str_replace("\n", "\n\t", "\n".$e->getTraceAsString())."\n  ";
+				$error->trace = explode("\n", trim($e->getTraceAsString()));
 			}
 		}
 		return $error;
@@ -89,7 +89,7 @@ class ExceptionHandler
 			header( sprintf('%s: %s', $name, $response->getHeaderLine($name)) );
 		}
 		if (config('system.errors.display')) {
-			echo $response->getBody(true);
+			echo str_replace("\\","\\\\",$response->getBody(true));
 		}
 	}
 
