@@ -88,7 +88,7 @@ class ExceptionHandler
 		foreach ($response->getHeaders() as $name => $values) {
 			header( sprintf('%s: %s', $name, $response->getHeaderLine($name)) );
 		}
-		if (config('system.error.display')) {
+		if (config('system.errors.display')) {
 			echo $response->getBody(true);
 		}
 	}
