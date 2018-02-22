@@ -3,6 +3,7 @@
  * Lista de dependências das funções auxiliares
  */
 use Core\Config\ApplicationConfig;
+use Core\Config\I18NConfig;
 use Core\Exception\ExceptionHandler;
 /**
  * Lista uma configuração
@@ -12,6 +13,24 @@ use Core\Exception\ExceptionHandler;
 function config($key, $fallback=null)
 {
 	return ApplicationConfig::getInstance()->get($key, $fallback);
+}
+/**
+ * Handler para Internacionalização
+ *
+ * @param string $key Caminho/Chave da internacionalização
+ * @param mixed $fallback Retorno caso $key não seja encontrado (por padrão gera exception)
+ * @throws \Exception
+ */
+function i18n($key, $fallback = \Exception::class)
+{
+	$conf = I18NConfig::getInstance();
+	if (!$conf->offsetExists($key)) {
+		if ($fallback == \Exception::class) {
+			throw new \Exception("Internationalization entry \"{$key}\" not found!");
+		}
+		return $fallback;
+	}
+	return $conf->offsetGet($key);
 }
 /**
  * Exibe o conteúdo de uma variável

@@ -74,12 +74,19 @@ return [
 		}
 	], $stationInfo),
 	// Lista de módulos do sistema
-	'modules' => function() {
+	'modules' => function() : array {
 		// Lista de módulos em arquivo separado
 		$appModules = is_file(APP_PATH . '/config/application.modules.php') ? include_once APP_PATH . '/config/application.modules.php' : [];
 		return array_merge_recursive_distinct([
 			// Lista padrão de módulos
 			'user' => ['path' => BASE_PATH . 'app/modules/User', 'model' => \App\Model\UserModel::class]
 		], $appModules);
+	},
+	// Internacionalização
+	'i18n' => function() : array {
+		if (is_file(APP_PATH . '/i18n.php')) {
+			return include APP_PATH.'/i18n.php';
+		}
+		return [];
 	}
 ];

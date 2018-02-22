@@ -93,5 +93,12 @@ return [
 			'model' => 'App\\Model\\ExampleModel',
 			'fields' => getSystemConfiguration('fieldsPath') . '/ExampleFields.php',
 		]*/
-	]
+	],
+	// Internacionalização
+	'i18n' => function() : array {
+		if (is_file(APP_PATH . '/i18n.php')) {
+			return include APP_PATH.'/i18n.php';
+		}
+		return [];
+	}
 ];

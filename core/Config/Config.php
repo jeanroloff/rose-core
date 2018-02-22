@@ -20,6 +20,7 @@ class Config extends \ArrayObject
 			$info['modules'] = call_user_func_array($info['modules'],[]);
 		}
 		Arr::set($this, 'modules', $info['modules']);
+		Arr::set($this, 'i18n', $info['i18n']);
 	}
 
 	public function get($key, $fallback = null)
