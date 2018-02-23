@@ -51,10 +51,10 @@ class ExceptionHandler
 		}
 		if (!is_a($e,Message::class)) {
 			$error->type = self::getType($e);
-			$error->file = $e->getFile();
+			$error->file = str_replace("\\", "\\\\", $e->getFile());
 			$error->line = $e->getLine();
 			if ($config['backtrace']) {
-				$error->trace = explode("\n", trim($e->getTraceAsString()));
+				$error->trace = explode("\n", str_replace("\\", "\\\\", trim($e->getTraceAsString())));
 			}
 		}
 		return $error;
@@ -89,7 +89,7 @@ class ExceptionHandler
 			header( sprintf('%s: %s', $name, $response->getHeaderLine($name)) );
 		}
 		if (config('system.errors.display')) {
-			echo str_replace("\\","\\\\",$response->getBody(true));
+			echo str_replace("\t", '\\\t',$response->getBody(true));
 		}
 	}
 
