@@ -239,3 +239,30 @@ function exceptionHandler($e)
 function user($info, $fallback = null) {
 	return \Core\Auth\User::getInstance()->getProperty($info, $fallback);
 }
+
+/**
+ * Internally call a route using the Slim application router
+ *
+ * @param $path
+ * @param string $method
+ * @param string $query
+ * @param string $contentType
+ * @param array $headers
+ * @return mixed|string
+ * @throws Exception
+ */
+function subrequest($path, $method = 'GET', $query = '', $contentType = 'application/json', $headers = [])
+{
+	$slim = \Core\App::getInstance()->slim;
+	$ctype = \Core\Http\Http::getContentType();
+	$headers['content-type'] = $contentType;
+	$data = $slim->subRequest($method, $path, $query, $headers)->getBody()->__toString();
+	\Core\Http\Http::setContentType($ctype);
+	if (stripos($contentType, 'json') !==false) {
+		if (($result = json_decode($data))!==false) {
+			return $result;
+		}
+		throw new \Exception("Unable to call the path \"{$path}\" with method \"{$method}\": " . $data);
+	}
+	return $data;
+}

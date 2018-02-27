@@ -36,19 +36,12 @@ class Cron extends Jobby
 	{
 		return $this->closure(function () use ($path, $method, $query, $contentType, $headers){
 			try {
-				$slim = \Core\App::getInstance()->slim;
-				$ctype = \Core\Http\Http::getContentType();
-				$headers['content-type'] = $contentType;
-				$data = $slim->subRequest($method, $path, $query, $headers)->getBody()->__toString();
-				\Core\Http\Http::setContentType($ctype);
-				if (stripos($contentType, 'json') !==false) {
-					if (($result = json_decode($data))!==false) {
-						echo \jsonpp($data);
-						return true;
-					}
-					throw new \Exception("Unable to call the path \"{$path}\" with method \"{$method}\": " . $data);
+				$data = \subrequest($path, $method, $query, $contentType, $headers);
+				if (is_array($data)) {
+					print_r($data);
+				} else {
+					echo $data;
 				}
-				print_r($data);
 				return true;
 			} catch (\Exception $e) {
 				echo "Error: " . $e->getMessage();
