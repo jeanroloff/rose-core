@@ -22,7 +22,11 @@ return [
 		],
 		// Tipo de conteúdo padrão do sistema
 		'defaultContentType' => 'text/html',
-//		'defaultContentType' => 'application/json',
+//		'defaultContentType' => 'application/json',,
+		// Console
+		'console' => [
+			'ignore' => []
+		],
 		// Configurações do site
 		'onInitialize' => function( \Core\App $app) {
 			if (is_file(APP_PATH . '/functions.php')) {

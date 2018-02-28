@@ -2,6 +2,8 @@
 
 namespace Core\Console;
 
+use Symfony\Component\Console\Command\Command;
+
 require __DIR__ . '/../Config/base.php';
 
 class Console
@@ -37,31 +39,22 @@ class Console
 			'Core\Console\Commands\Module\Base'
 		], config('system.console.ignore', []));
 		$this->list = [];
-		foreach ($this->getPaths() as $path) {
-			$rii = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
-			foreach ($rii as $file) {
-				if ($file->isDir()) {
-					continue;
-				}
-				if ($file->getExtension() == 'stub') {
-					continue;
-				}
-				$declared = get_declared_classes();
-				include_once $file->getPathname();
-				$currentDeclared = array_diff(get_declared_classes(), $declared);
-				foreach ($currentDeclared as $ns) {
-					if (!in_array($ns,$ignoreList)) {
-						$this->list[] = $ns;
-					}
+		$rii = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(BASE_PATH));
+		foreach ($rii as $file) {
+			if ($file->isDir()) {
+				continue;
+			}
+			if (stripos($file->getBasename(),'.atom.php')===false) {
+				continue;
+			}
+			$declared = get_declared_classes();
+			include_once $file->getPathname();
+			$currentDeclared = array_diff(get_declared_classes(), $declared);
+			foreach ($currentDeclared as $ns) {
+				if (!in_array($ns,$ignoreList)) {
+					$this->list[$ns] = $ns;
 				}
 			}
 		}
-	}
-
-	private function getPaths() : array
-	{
-		$paths[] = config('system.console.commands');
-		$paths[] = __DIR__ . '/Commands/';
-		return $paths;
 	}
 }

@@ -63,7 +63,6 @@ return [
 		'defaultContentType' => 'application/json',
 		// Console
 		'console' => [
-			'commands' => APP_PATH . "/console/",
 			'ignore' => []
 		],
 		// Cron Jobs

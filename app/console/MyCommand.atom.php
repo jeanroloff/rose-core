@@ -14,7 +14,7 @@ class MyCommand extends Command
 	{
 		$this
 			// the name of the command (the part after "bin/console")
-			->setName('app:create-user')
+			->setName('app:mycommand')
 
 			// the short description shown while running "php bin/console list"
 			->setDescription('Creates a new user.')
