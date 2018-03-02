@@ -39,21 +39,25 @@ class Console
 			'Core\Console\Commands\Module\Base'
 		], config('system.console.ignore', []));
 		$this->list = [];
+		$added = [];
 		$rii = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(BASE_PATH));
 		foreach ($rii as $file) {
-			if ($file->isDir()) {
-				continue;
-			}
-			if (stripos($file->getBasename(),'.atom.php')===false) {
-				continue;
-			}
-			$declared = get_declared_classes();
-			include_once $file->getPathname();
-			$currentDeclared = array_diff(get_declared_classes(), $declared);
-			foreach ($currentDeclared as $ns) {
-				if (!in_array($ns,$ignoreList)) {
-					$this->list[$ns] = $ns;
+			if (!in_array($file->getFileName(),$added)) {
+				if ($file->isDir()) {
+					continue;
 				}
+				if (stripos($file->getBasename(), '.atom.php') === false) {
+					continue;
+				}
+				$declared = get_declared_classes();
+				include_once $file->getPathname();
+				$currentDeclared = array_diff(get_declared_classes(), $declared);
+				foreach ($currentDeclared as $ns) {
+					if (!in_array($ns, $ignoreList)) {
+						$this->list[$ns] = $ns;
+					}
+				}
+				$added[] = $file->getFileName();
 			}
 		}
 	}
