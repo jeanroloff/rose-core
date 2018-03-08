@@ -29,8 +29,6 @@ class App
 	{
 		$this->INIT_TIME = microtime(true);
 		set_exception_handler(config('system.errors.handler'));
-		$this->registerDatabase();
-		$this->buildSlim();
 		$this->initialize();
 	}
 
@@ -56,9 +54,11 @@ class App
 
 	private function initialize()
 	{
+		$this->onInitialize();
+		$this->registerDatabase();
+		$this->buildSlim();
 		$this->router = new AppRouter( $this );
 		$this->router->execute();
-		$this->onInitialize();
 	}
 
 	private function onInitialize()
