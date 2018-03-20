@@ -66,6 +66,9 @@ class ModuleRouter
 	private function readRoutes()
 	{
 		$file = Str::ucfirst(Str::camel($this->module['name']))."Map.php";
+		if (!empty($this->module['map'])) {
+			$file = $this->module['map'].".php";
+		}
 		$routes = include $this->module['path'] .DIRECTORY_SEPARATOR. $file;
 		if (empty($routes)) {
 			throw new \Exception("Unable to read routes for module \"{$this->module['name']}\".");
