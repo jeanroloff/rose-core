@@ -63,7 +63,9 @@ class Report extends Output
 
 	protected function getPageUrl($page)
 	{
-		return $this->controller->getRequest()->getUri()->withQuery("page={$page}")->__toString();
+		parse_str($this->controller->getRequest()->getUri()->getQuery(), $query);
+		$query['page'] = $page;
+		return $this->controller->getRequest()->getUri()->withQuery(http_build_query($query))->__toString();
 	}
 
 	protected function getList() : LengthAwarePaginator
