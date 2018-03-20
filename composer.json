@@ -9,8 +9,8 @@
 			"email": "leonardodarosa23@gmail.com"
 		},
 		{
-			"name": "Jean Rollof",
-			"email": "rollof.jean@gmail.com"
+			"name": "Jean Roloff",
+			"email": "roloff.jean@gmail.com"
 		}
 	],
 	"autoload" : {
@@ -26,7 +26,7 @@
 		}
 	},
 	"require": {
-		"php": ">=7.1.0",
+		"php": ">=7.0.0",
 		"slim/slim": "3.8.*",
 	  	"slim/twig-view": "*",
 	  	"symfony/var-dumper": "*",
