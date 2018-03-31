@@ -18,7 +18,8 @@ return [
 			'dsn' => 'mysql://root:123456@127.0.0.1/core',
 			'engine' => 'innodb',
 			'afterConnect' => function(\Core\App $app, \Illuminate\Database\Capsule\Manager $capsule) {
-			}
+			},
+			'options' => [] // PDO options
 		],
 		// Tipo de conteúdo padrão do sistema
 		'defaultContentType' => 'text/html',
